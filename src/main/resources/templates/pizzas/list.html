@@ -32,6 +32,7 @@
             <td th:text="${pizza.price}"></td>
             <td>
                 <a class="btn btn-success" th:href="@{/pizza/show/{id}(id=${pizza.id})}">Dettagli</a>
+                <a class="btn btn-success" th:href="@{/pizza/edit/{id}(id=${pizza.id})}">Edit</a>
             </td>
         </tr>
         <div class="mt-3 d-flex justify-content-end">
