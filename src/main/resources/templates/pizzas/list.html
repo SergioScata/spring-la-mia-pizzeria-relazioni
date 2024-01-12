@@ -31,13 +31,19 @@
             </td>
             <td th:text="${pizza.price}"></td>
             <td>
-                <a class="btn btn-success" th:href="@{/pizza/show/{id}(id=${pizza.id})}">Dettagli</a>
-                <a class="btn btn-success" th:href="@{/pizza/edit/{id}(id=${pizza.id})}">Edit</a>
+                <div class="d-flex">
+                <a class="btn btn-success mx-2" th:href="@{/pizza/show/{id}(id=${pizza.id})}">Dettagli</a>
+                <a class="btn btn-success mx-2" th:href="@{/pizza/edit/{id}(id=${pizza.id})}">Edit</a>
+                <form th:action="@{/pizza/delete/{id}(id=${pizza.id})}" method="post">
+                    <button type="submit" class="btn btn-success mx-2">Delete</button>
+                </form>
+                </div>
             </td>
         </tr>
         <div class="mt-3 d-flex justify-content-end">
             <a class="btn btn-primary" th:href="@{/pizza/create}">Aggiungi la tua pizza</a>
         </div>
+        <div th:text="${redirectMessage}" th:if="${redirectMessage !=null}"></div>
         </tbody>
     </table>
 </div>
