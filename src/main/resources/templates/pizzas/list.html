@@ -14,6 +14,18 @@
 
 <div class="container">
     <h1>Pizze List</h1>
+    <div class="row mb-3">
+        <form id="pizza-search"
+              th:action="@{/pizza}"
+              method="get"
+              class="col-4"
+        >
+            <div class="input-group">
+                <input class="form-control" type="text" name="keyword" id="keyword" placeholder="Search pizzas by name or ingredients" th:value="${preloadSearch}">
+                <button type="submit" class="btn btn-warning">Search</button>
+            </div>
+        </form>
+    </div>
     <div th:if="${pizzaList.size() == 0}">The list is empty</div>
     <table class="table" th:unless="${pizzaList.size() == 0}">
         <thead>
