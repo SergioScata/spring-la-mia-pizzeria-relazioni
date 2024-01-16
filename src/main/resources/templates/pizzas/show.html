@@ -35,12 +35,14 @@
     <table class="table" th:if="${pizza.offers.size() > 0}">
         <thead>
         <tr>
+            <th>Offer's name</th>
             <th>Start Date</th>
             <th>End Date</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="off : ${pizza.offers}">
+            <td th:text="${off.title}"></td>
             <td th:text="${off.startDate}"></td>
             <td th:text="${off.endDate}"></td>
         </tr>
