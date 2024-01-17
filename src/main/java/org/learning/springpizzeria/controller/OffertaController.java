@@ -1,5 +1,6 @@
 package org.learning.springpizzeria.controller;
 
+import jakarta.validation.Valid;
 import org.learning.springpizzeria.model.Offerta;
 import org.learning.springpizzeria.model.Pizza;
 import org.learning.springpizzeria.repository.OffertaRepository;
@@ -8,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
@@ -43,9 +42,51 @@ public class OffertaController {
         }
     }
     @PostMapping("/create")
-    public String store(Offerta formOfferta){
+    public String store(@Valid @ModelAttribute("newOfferta") Offerta formOfferta, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()){
+            model.addAttribute("pizza", formOfferta.getPizza());
+            return "offers/create";
+        }if (formOfferta.getEndDate() != null && formOfferta.getEndDate().isBefore(formOfferta.getStartDate())) {
+            formOfferta.setEndDate(formOfferta.getStartDate().plusDays(30));
+        }
         Offerta storedOfferta = offertaRepository.save(formOfferta);
         return "redirect:/pizza/show/" + storedOfferta.getPizza().getId();
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Integer id, Model model) {
+        Optional<Offerta> result =offertaRepository.findById(id);
+        if (result.isPresent()) {
+            model.addAttribute("offerta", result.get());
+            return "offers/edit";
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Offer with id " + id
+                    + " not found");
+        }
+    }
+
+    @PostMapping("/edit/{id}")
+    public String update(@PathVariable Integer id,
+                         @Valid @ModelAttribute("borrowing") Offerta formOfferta, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "offers/edit";
+        }
+       Offerta updatedOfferta = offertaRepository.save(formOfferta);
+        return "redirect:/pizza/show/" + updatedOfferta.getPizza().getId();
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id) {
+        Optional<Offerta> result = offertaRepository.findById(id);
+        if (result.isPresent()) {
+            Offerta offertaToDelete = result.get();
+            offertaRepository.delete(offertaToDelete);
+            return "redirect:/pizza/show/" + offertaToDelete.getPizza().getId();
+        } else {
+            // se non esiste sollevo un'eccezione HTTP 404
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Offer with id " + id + " not found");
+        }
     }
 
 
