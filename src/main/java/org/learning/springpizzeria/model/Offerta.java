@@ -62,5 +62,9 @@ public class Offerta {
         this.pizza = pizza;
     }
 
+    public boolean isExpired(){
+        return endDate.isBefore(LocalDate.now());
+    }
+
 
 }

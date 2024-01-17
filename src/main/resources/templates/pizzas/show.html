@@ -41,13 +41,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="off : ${pizza.offers}">
+        <tr th:each="off : ${pizza.offers}" th:classAppend="${off.isExpired() ? 'table-danger' : ''}">
             <td th:text="${off.title}"></td>
             <td th:text="${off.startDate}"></td>
             <td th:text="${off.endDate}"></td>
-            <a class="btn btn-warning mx-2" th:href="@{/offers/edit/{id}(id=${off.id})}">Edit<i
-                    class="fa-solid fa-pen-to-square"></i></a>
-            <form
+           <td> <a class="btn btn-warning mx-2" th:href="@{/offers/edit/{id}(id=${off.id})}">Edit<i
+                   class="fa-solid fa-pen-to-square"></i></a>
+           </td>
+           <td> <form
                     th:action="@{/offers/delete/{id}(id=${off.id})}"
                     method="post"
                     onsubmit="return confirm('Are you sure?')"
@@ -55,6 +56,7 @@
                 <button type="submit" class="btn btn-danger mx-2">Delete<i class="fa-solid fa-trash-can"></i>
                 </button>
             </form>
+           </td>
         </tr>
 
         </tbody>
