@@ -17,9 +17,16 @@
         <div class="col-8">
             <img class="img-full img" th:src="@{${pizza.image}}">
         </div>
+        <div class="col-6">
+            <p class="text-light, text-center" th:text="${pizza.name}"></p>
+            <p class="text-light, text-center" th:text="${pizza.description}"></p>
+        </div>
 
         <div class="col-4">
-            <p class="text-light, text-center" th:text="${pizza.description}"></p>
+            <h4>Ingredients</h4>
+            <ul>
+               <li th:each="ing : ${pizza.ingredients}" th:text="${ing.name}"></li>
+            </ul>
         </div>
     </div>
     <div>

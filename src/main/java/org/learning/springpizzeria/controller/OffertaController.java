@@ -83,15 +83,9 @@ public class OffertaController {
             offertaRepository.delete(offertaToDelete);
             return "redirect:/pizza/show/" + offertaToDelete.getPizza().getId();
         } else {
-            // se non esiste sollevo un'eccezione HTTP 404
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Offer with id " + id + " not found");
         }
     }
-
-
-
-
-
 
 }
